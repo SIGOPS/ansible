@@ -16,7 +16,7 @@ int main(int argc, char **argv)
     hints.ai_family = AF_INET; /* IPv4 only */
     hints.ai_socktype = SOCK_STREAM; /* TCP */
 
-    s = getaddrinfo("www.illinois.edu", "80", &hints, &result);
+    s = getaddrinfo("remlnx.ews.illinois.edu", "65123", &hints, &result);
     if (s != 0) {
             fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(s));
             exit(1);
@@ -24,7 +24,7 @@ int main(int argc, char **argv)
 
     connect(sock_fd, result->ai_addr, result->ai_addrlen);
 
-    char *buffer = "GET / HTTP/1.0\r\n\r\n";
+    char *buffer = "HelloWorld\n";
     printf("SENDING: %s", buffer);
     printf("===\n");
     write(sock_fd, buffer, strlen(buffer));
