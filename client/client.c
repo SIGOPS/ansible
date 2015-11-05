@@ -24,12 +24,17 @@ int main(int argc, char **argv)
 
     connect(sock_fd, result->ai_addr, result->ai_addrlen);
 
-    char *buffer = "HelloWorld\n";
-    printf("SENDING: %s", buffer);
-    printf("===\n");
-    write(sock_fd, buffer, strlen(buffer));
-
-
+    char* line=NULL;
+    FILE* fp=stdin;
+    size_t len=0;
+    
+    while(getline(&line,&len,fp)!=-1){
+        printf("SENDING: %s", line);
+        printf("===\n");
+        write(sock_fd, buffer, strlen(buffer));
+        
+    }
+    
     char resp[1000];
     int len = read(sock_fd, resp, 999);
     resp[len] = '\0';
