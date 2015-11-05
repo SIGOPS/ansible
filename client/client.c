@@ -31,14 +31,25 @@ int main(int argc, char **argv)
     while(getline(&line,&len,fp)!=-1){
         printf("SENDING: %s", line);
         printf("===\n");
-        write(sock_fd, buffer, strlen(buffer));
-        
+        write(sock_fd, line, strlen(line));
     }
     
-    char resp[1000];
-    int len = read(sock_fd, resp, 999);
-    resp[len] = '\0';
-    printf("%s\n", resp);
-
+    pthread_t readthread;
+    pthread_create(&readthread,NULL,&readfromserver,NULL);
+    
+    pthread_join(readthread,NULL);
+    
     return 0;
+}
+
+void* readfromserver(void* arg)){
+    char resp[1000];
+    while(1){
+        char resp[1000];
+        int len = read(sock_fd, resp, 999);
+        resp[len] = '\0';
+        if(len>0){
+            printf("%s\n", resp);
+        }
+    }
 }
