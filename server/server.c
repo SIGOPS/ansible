@@ -36,9 +36,10 @@ int main(int argc, char **argv)
         exit(1);
     }
 
-    struct sockaddr_in *result_addr = (struct sockaddr_in *) result->ai_addr;
-    printf("Listening on file descriptor %d, port %d\n", sock_fd, ntohs(result_addr->sin_port));
+    
     while(1){
+        struct sockaddr_in *result_addr = (struct sockaddr_in *) result->ai_addr;
+        printf("Listening on file descriptor %d, port %d\n", sock_fd, ntohs(result_addr->sin_port));
         printf("Waiting for connection...\n");
         int client_fd = accept(sock_fd, NULL, NULL);
         printf("Connection made: client_fd=%d\n", client_fd);
