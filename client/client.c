@@ -16,7 +16,7 @@ int main(int argc, char **argv)
     hints.ai_family = AF_INET; /* IPv4 only */
     hints.ai_socktype = SOCK_STREAM; /* TCP */
 
-    s = getaddrinfo("remlnx.ews.illinois.edu", "65123", &hints, &result);
+    s = getaddrinfo("localhost", "65123", &hints, &result);
     if (s != 0) {
             fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(s));
             exit(1);
@@ -32,24 +32,25 @@ int main(int argc, char **argv)
         printf("SENDING: %s", line);
         printf("===\n");
         write(sock_fd, line, strlen(line));
+        connect(sock_fd, result->ai_addr, result->ai_addrlen);
     }
     
-    pthread_t readthread;
-    pthread_create(&readthread,NULL,&readfromserver,NULL);
+    // pthread_t readthread;
+    // pthread_create(&readthread,NULL,&readfromserver,NULL);
     
-    pthread_join(readthread,NULL);
+    // pthread_join(readthread,NULL);
     
     return 0;
 }
 
-void* readfromserver(void* arg)){
-    char resp[1000];
-    while(1){
-        char resp[1000];
-        int len = read(sock_fd, resp, 999);
-        resp[len] = '\0';
-        if(len>0){
-            printf("%s\n", resp);
-        }
-    }
-}
+// void* readfromserver(void* arg){
+//     char resp[1000];
+//     while(1){
+//         char resp[1000];
+//         int len = read(sock_fd, resp, 999);
+//         resp[len] = '\0';
+//         if(len>0){
+//             printf("%s\n", resp);
+//         }
+//     }
+// }

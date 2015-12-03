@@ -38,18 +38,19 @@ int main(int argc, char **argv)
 
     struct sockaddr_in *result_addr = (struct sockaddr_in *) result->ai_addr;
     printf("Listening on file descriptor %d, port %d\n", sock_fd, ntohs(result_addr->sin_port));
+    while(1){
+        printf("Waiting for connection...\n");
+        int client_fd = accept(sock_fd, NULL, NULL);
+        printf("Connection made: client_fd=%d\n", client_fd);
 
-    printf("Waiting for connection...\n");
-    int client_fd = accept(sock_fd, NULL, NULL);
-    printf("Connection made: client_fd=%d\n", client_fd);
+        char buffer[1000];
+        int len = read(client_fd, buffer, sizeof(buffer) - 1);
+        buffer[len] = '\0';
 
-    char buffer[1000];
-    int len = read(client_fd, buffer, sizeof(buffer) - 1);
-    buffer[len] = '\0';
-
-    printf("Read %d chars\n", len);
-    printf("===\n");
-    printf("%s\n", buffer);
+        printf("Read %d chars\n", len);
+        printf("===\n");
+        printf("%s\n", buffer);
+    }
 
     return 0;
 }
